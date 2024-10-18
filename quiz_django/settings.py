@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
+import django_heroku
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,10 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-e14b&4al$2rf5_33rdttci%9&g+@cwcys++yuppn!4da*g#7+y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
 
 # Application definition
 
@@ -82,13 +82,20 @@ WSGI_APPLICATION = 'quiz_django.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'quiz_postgres',
-        'USER': 'freddieline',
-        'PASSWORD': 'freddieline',
-        'HOST': 'localhost',          
-        'PORT': '5432',  
+        'NAME': os.environ.get('DB_NAME','quiz_postgres'),
+        'USER': os.environ.get('DB_USER','freddieline'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'freddieline'),
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
+
+# Static files (CSS, JavaScript, Images)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+
+# Activate Django-Heroku
+django_heroku.settings(locals())
 
 
 # Password validation
