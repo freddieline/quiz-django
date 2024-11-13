@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'drf_spectacular',
     'quiz',
 ]
 
@@ -141,6 +142,14 @@ REST_FRAMEWORK = {
     'DEFAULT_PARSER_CLASSES': (
         'djangorestframework_camel_case.parser.CamelCaseJSONParser',  # Converts incoming camelCase to snake_case
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Quiz',
+    'DESCRIPTION': 'API for quiz questions',
+    'VERSION': '1.0.0',
+    # Other optional settings
 }
 
 CORS_ALLOWED_ORIGINS = [
